@@ -1,0 +1,17 @@
+Modern web sunucularý built-in response compression desteði saðlamaktadýr. (IIS, Nginx, Apache) 
+ve Application Level Response Compression nazaran %30 lara kadar daha performanslý olduðu söylenmektedir.
+
+Bu durumda .net uygulama servis olarak built-in kestrel web server üzerinden host edilmesi durumunda Application Level Response Compression desteði kazandýrmak
+mantýklý olacaktýr.
+
+.Net Core 3.1 sürümü itibariyle built-in response compression desteði saðlamaktadýr. Bu poc de bu featuredan faydanýlmýþtýr.
+
+Bu arada application level response compression https yayýnlarda, Breach ve Crime saldýrýlarýna uygulamayý maruz býraktýðý söylenmektedir. 
+Fakat bu durum sadece browser etkilisimi olan bff servis implimente edildiðinde söz konusudur. Yani dýþ bir sisteme saðlanan web apilar için böyle bir risk yoktur.
+
+Built-in olarak gzip ve brotli compression algoritma desteðine sahiptir. 
+
+Uygulamaya ne kadar response compression desteði kazandýrýlsada client tarafýnda compression yorumlama altyapýsý yoksa bir anlamý yoktur.
+Ayrýyeten client tarafýnýn response compression den faydalanabilmesi için Accept-Encoding headerda gzip veya br bilgisi taþýmasý gerekmektedir. 
+Servis tarafýnda compression desteði olmasý durumunda response headerda content-encoding bilgisiyle compression mantýgý isletildigi bilgisi taþýnacaktýr.
+

@@ -1,0 +1,67 @@
+http://db-engines.com/en/ranking; populer veritabaný tercihleri listesi
+
+Unlike relational databases, related data doesn’t have to be split up between multiple tables; 
+instead, it can be nested within the same data structure.
+
+Developers have been quick to adopt NoSQL databases due to their flexible schema, efficient processing & storage of unstructured & semi-structured data 
+and ability to support high performance queries in a scale out environment. 
+
+scale up: vertically scaling
+scale out: horizantally scaling
+
+-> Top10 veritabanýnda 7 tane relational 3 tane nosql var. Redis-Mongodb-elasticsearch
+Row oriented vs Column oriented database benchmarks
+command(write side) tarafýnda row-oriented database (relational) tercihi yapýlmalýdýr.
+  -> Column-oriented database, entityin her bir kolonunu ayrý tablolarda saklar. Dolayýsýyla entity'i datastore'a yazarken tüm column tablelarýn manipule olmasý demektir.
+query (read side) tarafýnda column-oriented database tercihi hýzlý sorgu performansý saðlar. 
+  -> Colum-oriented database, entity'nin belirli bir kolonuna göre count,sum gibi istatistiksel ve analizsel bir bilgi istendiðinde oldukça avantajlýdýr.
+Örnek Colum-oriented veritabanlarý;  Facebook’s Cassandra, Google BigTable
+-> this database type is preferred for high-performance delivery in cases involving aggregation queries such as COUNT, SUM, MIN, and AVG.
+
+Key Value Database
+-> the most scalable of the NoSQL database types
+-> capable of storing huge amounts of data.
+-> KV stores resemble a relational database but with each table having only two columns.
+-> KV stores have Extremely fast query performance and are best suited for applications that require content caching
+-> A commonly-seen use of key-value pairing is for shopping carts on ecommerce websites.
+   Product recommendations: offering recommendations based on the person’s data. 
+-> caching, locking 
+-> Key features of the key-value store; Simplicity-Scalability-Speed
+Redis, Voldemort, Riak, and Amazon’s Dynamo. 
+-> In general, key-value stores are best for the persistent sharing of data by multiple processes or microservices in an application.
+
+Document Database
+-> complex querying and calculations 
+-> logging
+-> Document Stores are an extension of the simplicity of Key Value stores, where the values are stored in structured documents like XML or JSON.
+-> Document stores can be used for all use cases of a KV store database, but it also has additional advantages like there is no limitation of querying just by the key
+   but even querying attributes within a document, also data in each document can be in a different format. 
+-> Applications of document-oriented NoSQL databases include blogging platforms, CMS systems, ecommerce, and real-time analytics.
+-> Document-Oriented NoSQL DB stores and retrieves data as a key value pair but the value part is stored as a document. 
+   The document is stored in JSON or XML formats. The value is understood by the DB and can be queried.
+-> Documents can be stored and retrieved in a form that is much closer to the data objects used in applications 
+   which means less translation is required to use these data in the applications
+-> Collections are the group of documents that store documents that have similar contents.
+-> E.g. A product review website where zero or many users can review each product and
+   each review can be commented on by other users and can be liked or disliked by zero to many users.
+-> Each document is effectively an object containing attribute metadata along with a typed value such as string, date, binary or an array. 
+   This provides a way to index and query data based on the attributes in the document.
+Graph Database
+->This type of database is mainly leveraged for applications such as logistics, social networks, and spatial data analysis.
+->Graph-based NoSQL database solutions include Neo4J, Infinite Graph, and FlockDB.
+->focus on the relationship between the elements.
+
+Multi-model Database
+-> Nosql data modelleri olan column-oriented, key-value, document ve graph modellerinin kombinasyonunu destekleyen databaselerdir.
+
+
+Nosql veritabanýna gerçekten ihtiyacýn var mý varsa hangi nosql veritabanýný seçmeliyim kararý almak için Fit Analysis dan faydalanabiliriz. 
+4 adýmý var. 
+1.Adým: ACID prensipleri mi yoksa BASE prensipleri mi? 
+2.Adým: CAP teorimine göre hangi kategoriden bir nosql seçmeliyiz kararý alýyoruz.
+3.Adým: 2.Adým da seçilen cap kategorisinden hangi nosql veritabaný tipine ihtiyaç duyuyoruz kararý alýyoruz. (related to the application purpose & use case )
+4.Adým: 3.Adýmda seçilen nosql veritabaný tipine baðlý vendor seçimi - Select NoSQL Database (Vendor)
+ -Selection of a NoSQL Database also depends on the database technology, its configuration and available infrastructure, 
+  proposed architecture of your application, budget as well as the skill set available at your organization etc.
+  
+ 

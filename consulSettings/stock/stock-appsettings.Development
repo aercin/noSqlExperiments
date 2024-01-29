@@ -1,0 +1,56 @@
+{
+  "MongoDb": {
+    "Host": "localhost",
+    "Port": "27017",
+    "DatabaseName": "NosqlPoc",
+    "StockCollectionName": "Stocks",
+    "OutboxMessageCollectionName": "OutboxMessages",
+    "InboxMessageCollectionName": "InboxMessages"
+  },
+  "Integration": {
+    "Async": {
+      "BrokerAddress": "localhost:9092",
+      "ConsumerGroupId": "stockConsumerGroup",
+      "Produce": {
+        "Topic": "StockResponses"
+      },
+      "Consume": {
+        "Topic": "PlacedOrders"
+      }
+    }
+  },
+  "Vault": {
+    "MountPoint": "secret",
+    "Path": "stock",
+    "Address": "http://localhost:8200"
+  },
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.File" ],
+    "MinimumLevel": {
+      "Default": "Error",
+      "Override": {
+        "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Information",
+        "application": "Information"
+      }
+    },
+    "WriteTo": [
+      {
+        "Name": "File",
+        "Args": {
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] <corr-id:{CorrelationId}> <machine-name:{MachineName}> <s:[{SourceContext}]> {Message}{NewLine}{Exception}",
+          "path": "Logs/applog-.txt",
+          "rollingInterval": "Day",
+          "rollOnFileSizeLimit": true
+        }
+      }
+    ],
+    "Enrich": [
+      "FromLogContext",
+      "WithMachineName",
+      "WithCorrelationId"
+    ],
+    "Properties": {
+      "ApplicationName": "NoSqlPoc Stock Svc"
+    }
+  }
+}

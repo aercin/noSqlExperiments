@@ -1,0 +1,70 @@
+MongoDB
+-Cap'e göre CP kategorisindedir.
+-Document Oriented Database
+-stores data as BSON (binary JSON) documents.
+-The maximum BSON document size is 16 megabytes.
+-data storage yöntemi; disk based (default) veya  in-memory  
+ https://www.mongodb.com/databases/in-memory-database#:~:text=An%20in%2Dmemory%20database%20works,than%20on%20a%20traditional%20disk.
+-MongoDB Compass:
+  MongoDB Compass is a powerful GUI for querying, aggregating, and analyzing your MongoDB data in a visual environment.
+  Compass is free to use and source available, and can be run on macOS, Windows, and Linux.
+  https://www.mongodb.com/docs/compass/current/
+-Start Developing with MongoDB
+  https://www.mongodb.com/docs/drivers/
+- database -> collection -> document
+- The MongoDB Query API supports
+     -> read and write operations (CRUD) as well as
+	 -> Data Aggregation
+	 -> Text Search and Geospatial Queries.
+- Horizantally scaling (scale out) için sharding ve replica set özelliklerine sahiptir.
+- A replica set is a group of MongoDB servers that maintain the same data set, providing redundancy and increasing data availability.
+- If a collection does not exist, MongoDB creates the collection when you first store data for that collection.
+- By default, a collection does not require its documents to have the same schema;
+  i.e. the documents in a single collection do not need to have the same set of fields and the data type for a field can differ across documents within a collection.
+- To change the structure of the documents in a collection, such as add new fields, remove existing fields, or change the field values to a new type,
+  update the documents to the new structure.
+- Collection içerisindeki documentlarý, ttl index özelliði tanýmlanarak belirli bir süre sonra silinmesi saðlanabilir.
+https://www.mongodb.com/docs/manual/core/index-ttl/#std-label-index-feature-ttl
+-If an inserted document omits the _id field, the MongoDB driver automatically generates an ObjectId for the _id field.
+-official mongodb community server docker installation
+ https://www.mongodb.com/docs/manual/tutorial/install-mongodb-community-with-docker/
+-mongosh (mongo shell); environment for interacting with MongoDB deployments in 
+Atlas, locally, or on another remote host. Use the MongoDB Shell to test queries and interact with the data in your MongoDB database.
+  https://www.mongodb.com/docs/mongodb-shell/?_ga=2.63333807.1080876631.1702363726-874863238.1702363726&_gac=1.56912216.1702363887.CjwKCAiAg9urBhB_EiwAgw88mSCIVWIA0Ir2m54uf5U-N7Ym5lnqaqm-gQj3u4vnPdiGk3V3qFbX0BoCudMQAvD_BwE
+-All write operations(insert,delete,update) in MongoDB are atomic on the level of a single document.
+-When a single write operation (e.g. db.collection.updateMany()) modifies multiple documents, 
+the modification of each document is atomic, but the operation as a whole is not atomic.
+-For situations that require atomicity of reads and writes to multiple documents (in a single or multiple collections), MongoDB supports distributed transactions, including transactions on replica sets and sharded clusters.
+-In MongoDB, an operation on a single document is atomic. 
+-you can use embedded documents and arrays to capture relationships between data in a single document structure 
+instead of normalizing across multiple documents and collections, 
+this single-document atomicity obviates the need for distributed transactions for many practical use cases.
+-Distributed transaction örneði; 2 farklý collectiona ayný transaction boundaryde kayýt ekleme.
+https://www.mongodb.com/docs/manual/core/transactions/#std-label-transactions
+-If UpdateOne(), UpdateMany(), or ReplaceOne() includes an UpdateOptions argument instance with the IsUpsert option set to true 
+and no documents match the specified filter, then the operation creates a new document and inserts it. 
+-Aggregation Operations process multiple documents and return computed results.Group values from multiple documents together.
+Perform operations on the grouped data to return a single result.
+-Differences between Relational and Document Databases:
+ - Relational Database Behavior             
+   - You must determine a table's schema before you insert data.
+   - You often need to join data from several different tables to return the data needed by your application.
+ - Document Database Behavior
+   - Your schema can change over time as the needs of your application change.
+   - The flexible data model lets you store data to match the way your application returns data, and avoid joins. Avoiding joins across multiple collections improves performance.
+- You can use transactions to enforce consistency between collections that contain duplicated data. 
+  Transactions update multiple collections in a single atomic operation.
+  To use transactions, you must connect to a replica set or sharded cluster. You cannot use transactions on standalone deployments.
+- Schema Validation Support 
+https://www.mongodb.com/docs/manual/core/schema-validation/
+- Although indexes improve query performance, adding an index has negative performance impact for write operations.
+For collections with a high write-to-read ratio, indexes are expensive because each insert must also update any indexes.
+- Distributed transaction için callback api ve core api olmak üzere iki farklý api desteði söz konusu. 
+With distributed transactions, transactions can be used across multiple operations, collections, databases, documents, and shards.
+https://www.mongodb.com/docs/manual/core/transactions/
+- Distributed transaction feature'u replicateset veya sharded cluster bir mongo topologysinde kullanýlabilir. 
+Bu pocde single standalone mongodb instance'ý ile ilerleyemedim. Bu yüzden single node replicaset cluster bir mongo topologysi ayaklandýran docker-compose konfigurasyonu ile ilerledim.
+
+ 
+
+

@@ -1,0 +1,41 @@
+{ 
+  "Redis": {
+    "Endpoints": "localhost:6379",
+    "Database": "1",
+    "Expiration": 60
+  }, 
+  "Vault": {
+    "MountPoint": "secret",
+    "Path": "basket",
+    "Address": "http://localhost:8200"
+  },
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.File" ],
+    "MinimumLevel": {
+      "Default": "Error",
+      "Override": {
+        "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Information",
+        "application": "Information"
+      }
+    },
+    "WriteTo": [
+      {
+        "Name": "File",
+        "Args": {
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] <corr-id:{CorrelationId}> <machine-name:{MachineName}> <s:[{SourceContext}]> {Message}{NewLine}{Exception}",
+          "path": "Logs/applog-.txt",
+          "rollingInterval": "Day",
+          "rollOnFileSizeLimit": true
+        }
+      }
+    ],
+    "Enrich": [
+      "FromLogContext",
+      "WithMachineName",
+      "WithCorrelationId"
+    ],
+    "Properties": {
+      "ApplicationName": "NoSqlPoc Basket Svc"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+Couchbase veritabaný hk;
+
+Veritabanlarý in-memory, memory first ve disk based data storage yöntemlerinden bir veya bir kaçýný desteklemektedir.
+
+Örneðin Redis in-memory data storage destekleyen bir document oriented nosql veritabanýdýr.
+
+Couchbase ise bu 3 data storage yöntemini desteklemektedir. Dolayýsýyla Redis'in kullandýðý tüm durumlarda alternatif olarak tercih edilebilir.
+
+Örneðin Distributed Cache yönetiminde Redis'e avantajý Redis key-value olarak veriyi in-memory sakladýðýndan sadece ilgili veriye key üzerinden ulaþabiliriz.
+Fakat bu yöntemde Couchbase in-memory bullet ile ilerliyor olsaydýk, couchbase document-oriented olduðundan value üzerinden de sorgulamalar yapabiliyor olacaktýk üstelik
+alýþgelmiþ sql syntaxýna yakýn olan kendi sorgu dili sql++ ile.
+
+Birçok firma örneðin Linkedin distributed cache olarak tech stach'inde couchbase'i tercih etmektedir.
+
+Couchbase kavramlar 
+  bucket (database) -> scope -> collection (table) -> document (row)
+
+Bir couchbase clusterda max. 30 bucket olabilir.
+
+Bucket Tipleri;
+ - Couchbase Bucket (default) = memory first data storage desteðine sahip bucket türü; veriler hem memory de hem de diskte tutulmaktadýr.
+ - Memcached Bucket (deprecated) = in-memory data storage desteðine sahip bucket türü; veriler memoryde süresiz tutulmaktadýr.
+ - Ephemeral Bucket = in-memory data storage desteðine sahip bucket türü; veriler belirli bir süreliðine memoryde tutulmaktadýr.
+
+Ephemeral ve Memcached bucketlarý için memory kotasý söz konusudur ve bu kota bucket yaratým aþamasýnda belirtilmektedir. Bu memory kotasý aþýlýrsa ejection mantýðý devreye girmektedir.
+  - Ephemeral için ejection mantýðý; 
+      - Memoryde yer alan kayýtlar korunur yeni kayýt kabul edilmez seçeneði 
+	    veya 
+	  - Memoryde yer alan kayýtlar için not recently used algoritmasý (yani son zamanda en az kullanýlan kayýtlardan baþlanarak) baz alýnarak memoryde yeni kayýtlar için yer açýlýr.
+  - Memcached için Ejection mantýðý;
+      - Memoryde yer alan kayýtlar için not recently used algoritmasý (yani son zamanda en az kullanýlan kayýtlardan baþlanarak) baz alýnarak memoryde yeni kayýtlar için yer açýlýr. 
+Couchbase Bucketlari kayýtlar hem memory hemde diskte saklar. Memory kotasý aþýldýðýnda ejection flowu iþletir ve memoryde yer açar zaten kayýt diskte korumaya devam eder.
+  - Memoryde yer alan kayýtlar için not recently used algoritmasý (yani son zamanda en az kullanýlan kayýtlardan baþlanarak) baz alýnarak memoryde yeni kayýtlar için yer açýlýr.
+
+Couchbase veritabanýnda documentlar üzerinde sorgulama yapmaný saðlayan n1ql veya sql++ isminde dsl'e sahiptir. 
+
+Couchbase veritabanýnda documentlar JSON olarak saklanýr.
+
+Document seviyesinde ttl süresi ayarlanabilir, yani bir documentýn couchbase veritabanýnda ne kadar saklanacaðý ayarlanabilir. Örnek vermek gerekirse; geçerliliði belirli bir süre olacak þekilde sms veya þifre sýfýrlama linki vb. 
+
+CAP teorimine göre single cluster ve multi cluster (XDCR; cross data center replication) bir topolojiye baðlý cp veya ap olarak davranmaktadýr. Single cluster bir topolojide cp, multi cluster bir topolojide 
+ap diyebiliriz.
+
+Couchbasede concurrent document mutation|modification iþlemi için cas (capture and swap) isminde bir metadata itemý bulunmaktadýr. Eþ zamanlý ayný doküman üzerinde çalýþýlmasý durumunda
+cas deðerine baðlý olarak iþlemin yapýlmasý engellenebilir. (optimistic ve pessimistic lock benzeri) 
+Bir dokümaný update veye remove etmek istediðimizde bu metotlara taþýnacak cas deðeri, sunucudaki bulunan doküman cas deðeri ile karþýlaþtýrýlýr ve case deðeri eþit ise iþlem yapýlýr.
+aksi durumda mutation error(CasMismatchException) fýrlatýlýr. Doküman üzerinde yapýlan her iþlem dönüþünde cas metadata bilgiside result objesinde saðlanmaktadýr.
+
+Sql++(N1QL) sorgularý Cluster seviyesinde (JOIN/UNION gibi ifadeleri farklý bucketlar ile ele alabilmek için) çalýþtýrýlmaktadýr. .Net SDK üzerinden sql++ query ile data çekilecekse IClusterProvider injection yapýlmalýdýr.
+Key-Value operationlar Collection seviyesinde çalýþtýrýlmaktadýr. .Net SDK üzerinden key-value operationlar ile çalýþacaksa IBucketProvider injection yapýlmalýdýr ve bucketProvider üzerinden ilgili collection aracýlýðýyla iþlem yapýlmalýdýr.
+https://www.couchbase.com/blog/asp-net-core-crud-nosql-part-3/
+
+Key-Value api ile doküman okumalarý, Sql++ api'aný nazaran çok daha hýzlý. Üstelik bir doküman üzerindeki nested bir dokümanýn specific bir itemini tek hamlede alma imkanýn var.
+https://docs.couchbase.com/server/current/guides/reading-data.html#reading-a-sub-document

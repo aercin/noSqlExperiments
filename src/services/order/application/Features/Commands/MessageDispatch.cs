@@ -2,6 +2,7 @@
 using core_application.Abstractions;
 using core_application.Common;
 using MediatR;
+using System.Text.Json;
 
 namespace application.Features.Commands
 {
@@ -39,7 +40,9 @@ namespace application.Features.Commands
                 {
                     try
                     {
-                        await this._dispatcher.DispatchEventAsync(outboxMessage.Topic, outboxMessage.Message);
+                        var message = JsonSerializer.Deserialize(outboxMessage.Message, Type.GetType(outboxMessage.Type));
+
+                        await this._dispatcher.DispatchEventAsync(message);
 
                         await this._uow.OutboxMessageRepo.DeleteOneAsync(x => x.Id == outboxMessage.Id);
                     }

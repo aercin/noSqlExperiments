@@ -2,6 +2,6 @@
 {
     public interface IEventDispatcher
     {
-        Task DispatchEventAsync(string topic, string message);
+        Task DispatchEventAsync(object message);
     }
 }

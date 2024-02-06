@@ -95,8 +95,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 });
 
 builder.Services.AddHealthChecks();
-
-builder.Services.AddHostedService<StockConsumer>();
+ 
 builder.Services.AddHostedService<MessageRelayService>();
 
 var app = builder.Build();

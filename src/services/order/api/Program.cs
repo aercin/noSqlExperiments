@@ -13,7 +13,7 @@ using Winton.Extensions.Configuration.Consul;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//// Add services to the container.
 builder.Configuration.AddConsul(
                         $"order/appsettings.{builder.Environment.EnvironmentName}.json",
                         options =>
@@ -82,7 +82,7 @@ builder.Services.AddResponseCompression(x =>
     x.EnableForHttps = true;
 });
 
-//Add support to logging with SERILOG
+////Add support to logging with SERILOG
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
@@ -94,7 +94,6 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 builder.Services.AddHealthChecks();
 
-builder.Services.AddHostedService<OrderConsumer>();
 builder.Services.AddHostedService<MessageRelayService>();
 
 var app = builder.Build();
@@ -120,7 +119,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHealthChecks("/healthz");
+//app.MapHealthChecks("/healthz");
 
 app.Run();
 

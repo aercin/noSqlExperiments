@@ -1,6 +1,8 @@
 ﻿using application;
 using application.Abstractions;
+using core_application.Abstractions;
 using core_infrastructure.Extensions;
+using core_infrastructure.Services.RabbitMQ;
 using infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,8 +23,9 @@ namespace infrastructure
             {
                 x.ConnectionString = $"mongodb://{config.GetValue<string>("MongoDb:Host")}:{config.GetValue<string>("MongoDb:Port")}/?replicaSet=rs0";
             });
-            services.AddKafkaDependency(config);
+            services.AddRabbitMqDependency(config);
             services.AddCorrelation();
+            services.AddSingleton<IEventDispatcher, EventDispatcher>();
         }
     }
 }

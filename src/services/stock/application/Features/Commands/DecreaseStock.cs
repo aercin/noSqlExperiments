@@ -91,7 +91,7 @@ namespace application.Features.Commands
                     {
                         Id = Guid.NewGuid().ToString(),
                         ServiceName = "stock",
-                        Topic = this._configuration.GetValue<string>("Integration:Async:Produce:Topic"),
+                        Type = typeof(StockDecreasedEvent).AssemblyQualifiedName,
                         Message = JsonSerializer.Serialize(new StockDecreasedEvent
                         {
                             OrderId = request.OrderId
@@ -129,7 +129,7 @@ namespace application.Features.Commands
                 {
                     Id = Guid.NewGuid().ToString(),
                     ServiceName = "stock",
-                    Topic = config.GetValue<string>("Integration:Async:Produce:Topic"),
+                    Type = typeof(StockNotDecreasedEvent).AssemblyQualifiedName,
                     Message = JsonSerializer.Serialize(new StockNotDecreasedEvent
                     {
                         OrderId = orderId

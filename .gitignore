@@ -263,3 +263,7 @@ FakesAssemblies/
 *.opt
  
 Logs/
+consul-data/
+couchbase-data/
+mongo-data/
+redis-data/

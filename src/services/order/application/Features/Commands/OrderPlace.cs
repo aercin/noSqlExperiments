@@ -49,7 +49,7 @@ namespace application.Features.Commands
                 var jsonBasketDetail = await resBasket.Content.ReadAsStringAsync();
 
                 BasketResult resBasketService = JsonSerializer.Deserialize<BasketResult>(jsonBasketDetail, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-           
+
                 if (resBasketService?.Data == null || resBasketService.Data.Count == 0)
                     return Result.Failure(new List<string> { "Siparişe konu bir sepet bulunamadı" });
 
@@ -71,7 +71,7 @@ namespace application.Features.Commands
                     {
                         Id = Guid.NewGuid().ToString(),
                         ServiceName = "order",
-                        Topic = this._configuration.GetValue<string>("Integration:Async:Produce:Topic"),
+                        Type = typeof(OrderPlacedEvent).AssemblyQualifiedName,
                         Message = JsonSerializer.Serialize(new OrderPlacedEvent
                         {
                             OrderId = newOrderId,
@@ -82,7 +82,7 @@ namespace application.Features.Commands
 
                     await this._uow.CommitAsync();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     await this._uow.RollbackAsync();
                     throw;

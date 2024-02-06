@@ -9,14 +9,24 @@
   },
   "Integration": {
     "Async": {
-      "BrokerAddress": "localhost:9092",
-      "ConsumerGroupId": "orderConsumerGroup",
-      "Produce": {
-        "Topic": "PlacedOrders"
-      },
-      "Consume": {
-        "Topic": "StockResponses"
-      }
+      "BrokerAddress": "amqp://localhost:5003",
+      "Consume": [
+        {
+          "Queue": "StockResponses",
+          "Consumers": [
+            {
+              "Type": "api.Consumers.StockDecreasedEventConsumer,api",
+              "MaxRetry": 3,
+              "RetryInterval": 5000
+            },
+            {
+              "Type": "api.Consumers.StockNotDecreasedEventConsumer,api",
+              "MaxRetry": 3,
+              "RetryInterval": 5000
+            }
+          ]
+        }
+      ]
     },
     "Sync": {
       "BasketServiceUrl": "http://localhost:5287/api/v1/baskets?UserId={0}"

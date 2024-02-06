@@ -9,14 +9,19 @@
   },
   "Integration": {
     "Async": {
-      "BrokerAddress": "localhost:9092",
-      "ConsumerGroupId": "stockConsumerGroup",
-      "Produce": {
-        "Topic": "StockResponses"
-      },
-      "Consume": {
-        "Topic": "PlacedOrders"
-      }
+      "BrokerAddress": "amqp://localhost:5003",
+      "Consume": [
+        {
+          "Queue": "PlacedOrders",
+          "Consumers": [
+            {
+              "Type": "api.Consumers.OrderPlacedEventConsumer,api",
+              "MaxRetry": 3,
+              "RetryInterval": 5000
+            }
+          ]
+        }
+      ]
     }
   },
   "Vault": {

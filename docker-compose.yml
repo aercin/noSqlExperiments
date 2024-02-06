@@ -259,7 +259,22 @@ services:
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:808'
      networks:
       - dev 
-
+   rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5003:5672
+      - 5004:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/
+      - rabbitmq_log:/var/log/rabbitmq
+    healthcheck:
+     test: ["CMD", "curl", "-f", "http://rabbitmq:15672"]
+     interval: 30s
+     timeout: 10s
+     retries: 5
+    networks:
+      - dev
 networks:
   dev:
     driver: bridge 
@@ -270,3 +285,5 @@ volumes:
   vault-data:
   mongo-data:
   couchbase-data:
+  rabbitmq_data:
+  rabbitmq_log:

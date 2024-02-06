@@ -6,8 +6,8 @@ namespace core_domain.Entities
     {
         public string Id { get; set; }
         public string ServiceName { get; set; }
-        public string Message { get; set; }
-        public string Topic { get; set; }
+        public string Type { get; set; }
+        public string Message { get; set; } 
         public DateTime CreatedOn { get; set; }
     }
 }
